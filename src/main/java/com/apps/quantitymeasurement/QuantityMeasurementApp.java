@@ -2,107 +2,50 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
-    /**
-     * Enum representing supported length units.
-     * Base unit is INCHES.
-     */
-    public enum LengthUnit {
-
-        FEET(12.0),            // 1 foot = 12 inches
-        INCHES(1.0),           // base unit
-        YARDS(36.0),           // 1 yard = 36 inches
-        CENTIMETERS(0.393701); // 1 cm = 0.393701 inches
-
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
+    public static boolean demonstrateLengthEquality(Length length1, Length length2) {
+        if (length1 == null || length2 == null) {
+            throw new IllegalArgumentException("Length cannot be null");
         }
-
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
+        return length1.equals(length2);
     }
 
-    /**
-     * Generic Length class implementing DRY principle.
-     */
-    public static class Length {
+    public static boolean demonstrateLengthComparison(
+            double value1, Length.LengthUnit unit1,
+            double value2, Length.LengthUnit unit2) {
 
-        private final double value;
-        private final LengthUnit unit;
+        Length length1 = new Length(value1, unit1);
+        Length length2 = new Length(value2, unit2);
 
-        public Length(double value, LengthUnit unit) {
-            if (unit == null) {
-                throw new IllegalArgumentException("Unit cannot be null");
-            }
-            this.value = value;
-            this.unit = unit;
-        }
+        boolean result = demonstrateLengthEquality(length1, length2);
 
-        /**
-         * Converts the length to base unit (inches).
-         */
-        private double convertToBaseUnit() {
-            return value * unit.getConversionFactor();
-        }
-
-        /**
-         * Value-based equality comparison using base unit conversion.
-         */
-        @Override
-        public boolean equals(Object obj) {
-
-            // Same reference check
-            if (this == obj) {
-                return true;
-            }
-
-            // Null and type check
-            if (obj == null || this.getClass() != obj.getClass()) {
-                return false;
-            }
-
-            Length other = (Length) obj;
-
-            // Compare converted values
-            return Double.compare(
-                    this.convertToBaseUnit(),
-                    other.convertToBaseUnit()
-            ) == 0;
-        }
-    }
-
-    // ----------------------------------------------------
-    // Helper method to print output
-    // ----------------------------------------------------
-    public static void printResult(double v1, LengthUnit u1,
-                                   double v2, LengthUnit u2) {
-
-        Length l1 = new Length(v1, u1);
-        Length l2 = new Length(v2, u2);
-
-        System.out.println(
-                "Input: Quantity (" + v1 + ", " + u1 + ") and Quantity(" + v2 + ", " + u2 + ")"
-        );
-        System.out.println("Output: Equal (" + l1.equals(l2) + ")");
+        System.out.println("Input: " + length1 + " and " + length2);
+        System.out.println("Output: Equal (" + result + ")");
         System.out.println();
+
+        return result;
     }
 
-    // ----------------------------------------------------
-    // -----------------Main method –----------------------
-    // ----------------------------------------------------
     public static void main(String[] args) {
 
-        printResult(1.0, LengthUnit.YARDS, 3.0, LengthUnit.FEET);
+        // Feet and Inches
+        demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,
+                12.0, Length.LengthUnit.INCHES);
 
-        printResult(1.0, LengthUnit.YARDS, 36.0, LengthUnit.INCHES);
+        // Yards and Inches
+        demonstrateLengthComparison(1.0, Length.LengthUnit.YARDS,
+                36.0, Length.LengthUnit.INCHES);
 
-        printResult(2.0, LengthUnit.YARDS, 2.0, LengthUnit.YARDS);
+        // Centimeters and Inches
+        demonstrateLengthComparison(100.0, Length.LengthUnit.CENTIMETERS,
+                39.3701, Length.LengthUnit.INCHES);
 
-        printResult(2.0, LengthUnit.CENTIMETERS, 2.0, LengthUnit.CENTIMETERS);
+        // Feet and Yards
+        demonstrateLengthComparison(3.0, Length.LengthUnit.FEET,
+                1.0, Length.LengthUnit.YARDS);
 
-        printResult(1.0, LengthUnit.CENTIMETERS, 0.393701, LengthUnit.INCHES);
+        // Centimeters and Feet
+        demonstrateLengthComparison(30.48, Length.LengthUnit.CENTIMETERS,
+                1.0, Length.LengthUnit.FEET);
     }
 }
  

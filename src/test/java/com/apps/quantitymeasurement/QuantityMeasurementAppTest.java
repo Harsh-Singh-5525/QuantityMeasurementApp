@@ -3,8 +3,8 @@ package com.apps.quantitymeasurement;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.apps.quantitymeasurement.QuantityMeasurementApp.Length;
-import com.apps.quantitymeasurement.QuantityMeasurementApp.LengthUnit;
+import com.apps.quantitymeasurement.Length;
+import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementAppTest {
 
